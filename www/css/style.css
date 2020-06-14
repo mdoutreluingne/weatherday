@@ -1,0 +1,39 @@
+body {
+  background-color: #e0e0e0; 
+}
+
+nav img {
+  margin-top: 3px; 
+}
+
+a.btn {
+  width: 100%; 
+}
+
+.margin {
+  margin: 25px 15px !important; 
+}
+
+.mainweather {
+    color: white;
+}
+
+.icon_menu {
+    float: left;
+    padding: 2.5%;
+}
+
+.user-view {
+  background-color:#4db6ac;
+}
+
+#card_info1 {
+  border-right: 1px solid #64b5f6;
+}
+
+.titre_info {
+  border-right: 1px solid #64b5f6;
+}
+
+
+  
