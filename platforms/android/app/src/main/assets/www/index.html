@@ -57,7 +57,17 @@
                     <li><a class="subheader">Réglages</a></li>
                     <li><a class="waves-effect" href="">Langue</a></li>
                     <li><a class="waves-effect" href="">Notification</a></li>
-                    <li><a class="waves-effect" href="">Mode nuit</a></li>
+                    <li><a class="waves-effect">Mode nuit
+                        <div class="switch secondary-content">
+                            <label>
+                                Off
+                                <input type="checkbox">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
+                        </a>
+                    </li>
                     <li>
                         <div class="divider"></div>
                     </li>
@@ -65,7 +75,7 @@
                     <li><a class="waves-effect" href="">A propos</a></li>
                     <li><a class="waves-effect" href="">Partager l'application</a></li>
                     <li><a class="waves-effect" href="">Noter l'application</a></li>
-                    <li><input type="email"><a class="waves-effect" href="">Contactez-nous</a></li>
+                    <li><a class="waves-effect" href="mailto:maxime.doutreluingne@sfr.fr?subject=showcase">Contactez-nous</a></li>
                 </ul>
                 <!-- Logo centrer -->
                 <img src="img/logo.png" alt="Logo" class="brand-logo" width="50" height="50">
@@ -82,8 +92,23 @@
                 <a class="waves-effect waves-light btn" id="getWeather">Obtient la météo</a>
             </form>
         </div>
+
         <!-- Information météo -->
         <div class="card-panel teal center-align" id="card">
+        </div>
+
+        <!-- Information humidité et vent -->
+        <div class="row">
+            <div class="card horizontal">
+                <div class="card-stacked teal col s6" id="">
+                    <span class="center-align mainweather titre_info">Humidité</span>
+                    <div id="card_info1" class="center-align"></div>
+                </div>
+                <div class="card-stacked teal col s6" id="">
+                    <span class="center-align mainweather">Vent</span>
+                    <div id="card_info2" class="center-align"></div>
+                </div>
+            </div>        
         </div>
         
         <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>

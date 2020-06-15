@@ -27,6 +27,26 @@ a.btn {
   background-color:#4db6ac;
 }
 
+#card_info1 {
+  border-right: 1px solid #64b5f6;
+}
 
+.titre_info {
+  border-right: 1px solid #64b5f6;
+}
+
+.infoweather {
+  color: white;
+  font-size: 15px;
+}
+
+.infoweather img {
+  vertical-align:middle;
+  margin: 4%;
+}
+
+.waves-effect div {
+  vertical-align:middle;
+}
 
   
