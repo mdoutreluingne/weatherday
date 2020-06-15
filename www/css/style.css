@@ -35,5 +35,18 @@ a.btn {
   border-right: 1px solid #64b5f6;
 }
 
+.infoweather {
+  color: white;
+  font-size: 15px;
+}
+
+.infoweather img {
+  vertical-align:middle;
+  margin: 4%;
+}
+
+.waves-effect div {
+  vertical-align:middle;
+}
 
   

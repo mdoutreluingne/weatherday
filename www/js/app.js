@@ -29,12 +29,11 @@ $(document).ready(function () {
                 cardSelector.append("<h5 class='mainweather'>" + weatherType + "</h5>");
                 cardSelector.append("<h5 class='mainweather'>" + tempInCelsius + "°C</h5>");
                 cardSelector.append("<img src='img/" + iconCode + ".png' class='responsive-img' alt='Weather Icon' width='80px' height='80px'>");
-                cardInfo1.html("<p class='mainweather''><img src='img/drop.png' class='responsive-img' alt='Drop'>" + humidity + " %</p>");
-                cardInfo2.html("<p class='mainweather''><img src='img/wind.png' class='responsive-img' alt='Wind'>" + wind + " Km/h</p>");
+                cardInfo1.html("<p class='infoweather''><img src='img/drop.png' class='responsive-img' alt='Drop'>" + humidity + " %</p>");
+                cardInfo2.html("<p class='infoweather''><img src='img/wind.png' class='responsive-img' alt='Wind'>" + wind + " Km/h</p>");
 
 
-
-                //Si une ville n'a pas été trouvée
+             //Si une ville n'a pas été trouvée
             }).fail(function (jqXHR) {
                 if (jqXHR.status == 404) {
                     alert("La ville n'a pas été trouvée.");
