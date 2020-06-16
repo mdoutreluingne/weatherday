@@ -4,10 +4,11 @@
     <description>
         Retrouvez la qualité des prévisions météo de Openweathermap sur votre application, pour toutes les communes de métropole, d'outre-mer et dans le monde. Des prévisions en direct avec géolocalisation et pluie dans l’heure.
     </description>
-    <author email="maxime.doutreluingne@sfr.fr">
+    <author email="dev.weatherday@mail.fr">
         WeatherDay Team
     </author>
     <content src="index.html" />
+    <icon src="img/logo.png" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
