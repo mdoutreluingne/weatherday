@@ -1,10 +1,23 @@
 $(document).ready(function () {
 
-
     var city = localStorage.getItem("city"); //on récupere la variable localStorage ayant pour clé city, puis on la met dans une variable
     var cardSelector = $("#card"); //on mets notre sélecteur dans une variable
     var cardInfo1 = $("#card_info1"); //on mets notre sélecteur dans une variable
     var cardInfo2 = $("#card_info2"); //on mets notre sélecteur dans une variable
+    
+
+    var monthName = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+    var dayName = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
+    var maDate = new Date();
+    var jour = maDate.getDay(); //Jour
+    var njour = maDate.getDate(); //Numéro du jour
+    var mois = maDate.getMonth(); //Mois (commence à 0, donc +1)
+    var hours = maDate.getHours();
+    var minute = maDate.getMinutes();
+
+    var dateToday = dayName[jour] + ' ' + njour + ' ' +monthName[mois] + ' ' + hours + ':' + minute;
+    
 
     function getWeatherDay() { // on crée une fonction qui récupere la météo avec les instructions suivantes
         if (city == null) { // on teste si la variable city est nulle
@@ -26,8 +39,9 @@ $(document).ready(function () {
 
                 // ici on rempli la card avec nos valeurs, premierement la liste d'information, puis ensuite on affiche l'image avec le code icone
                 cardSelector.append("<h4 class='mainweather'>" + cityName + "</h4>");
+                cardSelector.append("<span class='dateweather'>" + dateToday + "</span>");
+                cardSelector.append("<h4 class='mainweather'>" + tempInCelsius + "°C</h4>");
                 cardSelector.append("<h5 class='mainweather'>" + weatherType + "</h5>");
-                cardSelector.append("<h5 class='mainweather'>" + tempInCelsius + "°C</h5>");
                 cardSelector.append("<img src='img/" + iconCode + ".png' class='responsive-img' alt='Weather Icon' width='80px' height='80px'>");
                 cardInfo1.html("<p class='infoweather''><img src='img/drop.png' class='responsive-img' alt='Drop'>" + humidity + " %</p>");
                 cardInfo2.html("<p class='infoweather''><img src='img/wind.png' class='responsive-img' alt='Wind'>" + wind + " Km/h</p>");
