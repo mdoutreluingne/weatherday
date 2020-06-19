@@ -56,4 +56,11 @@ a.btn {
   vertical-align:middle;
 }
 
+.img_weather_week {
+  margin-left: 15%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+}
+
   
