@@ -62,11 +62,21 @@ $(document).ready(function () {
         }
     }
 
+    function numAverage(a) {
+        var b = a.length,
+            c = 0, i;
+        for (i = 0; i < b; i++) {
+            c += Number(a[i]);
+        }
+        return c / b;
+    }
+
     //Donne la météo sur 5 jours avec 3 heures d'intervalle
     function getWeatherWeek() {
 
         //Variables
         var cardWeatherWeek = $("#weatherweek"); //on mets notre sélecteur dans une variable
+        var cardForecastDay = $("#forecastday"); //on mets notre sélecteur dans une variable
         var tabWeather = new Object();
         var moyTempMaxWeather = new Object();
         var moyTempMinWeather = new Object();
@@ -86,11 +96,17 @@ $(document).ready(function () {
                     var jourweather = new Date(tabWeather[index].dt * 1000);
                     jourweather = jourweather.getDay();
                     
-                    for (let i = 0; i < tabWeather.length; i++) {
-                        moyTempMaxWeather = numAverage([tabWeather[i].main.temp_max, tabWeather[i].main.temp_max]);
+                    if (jourweather != jour) { //N'affiche pas pour la date d'aujourd'hui
+                        for (let i = 0; i < tabWeather.length; i++) {
+
+                            moyTempMaxWeather = numAverage([tabWeather[i].main.temp_max]);
+                        }
+                        console.log(moyTempMaxWeather);
+                        cardWeatherWeek.slick('slickAdd', '<div><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + dayName[jourweather].substring(0, 3) + '.</p></div>'); 
                     }
-                    
-                    cardWeatherWeek.slick('slickAdd', '<div><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h5>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h5><h5>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h5><p>' + dayName[jourweather] + '</p></div>');   
+                    else { //Affiche les prévisions pour aujourd'hui
+                        cardForecastDay.slick('slickAdd', '<div><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + dayName[jourweather].substring(0, 3) + '.</p></div>');
+                    }
                 }
                 
                 /*var cityName = result.name; // le nom de la ville est directement accesible donc pas de souci
@@ -100,11 +116,6 @@ $(document).ready(function () {
                 var tempInCelsius = (temp - 273.15).toFixed(1); // notre temperature est en Kelvin donc on effectue notre soustration pour l'avoir en Celsius, puis le toFixed permet d'arrondir une valeur, le 1 correspond à un chiffre apres la virgule
                 var humidity = result.main.humidity; //Notre humidité
                 var wind = Math.round(result.wind.speed * 3.6); //La vitesse du vent en km/h*/
-
-                
-                cardWeatherWeek.slick('slickAdd', '<div><h3>2</h3></div>');
-                cardWeatherWeek.slick('slickAdd', '<div><h3>3</h3></div>');
-                cardWeatherWeek.slick('slickAdd', '<div><h3>4</h3></div>');
 
                 //Si une ville n'a pas été trouvée
             }).fail(function (jqXHR) {
@@ -137,5 +148,5 @@ $(document).ready(function () {
 
     $('.sidenav').sidenav(); //Affiche la slidenav de côté
     getWeatherDay(); // ici on appelle à l'allumage de l'application la fonction getWeatherDay
-    //getWeatherWeek();
+    getWeatherWeek();
 });

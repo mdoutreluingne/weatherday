@@ -1,8 +1,8 @@
 $(document).ready(function () {
     /*Configuration des slides */
     $('.previsionweather').slick({
-        slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToShow: 5,
+        slidesToScroll: 5,
         arrows: false,
         infinite: false
     });
