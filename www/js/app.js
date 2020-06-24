@@ -30,7 +30,7 @@ $(document).ready(function () {
         var cardInfo2 = $("#card_info2"); //on mets notre sélecteur dans une variable
         
         if (city == null) { // on teste si la variable city est nulle
-            cardSelector.append("<p>Vous n'avez pas encore renseign&eacute; de ville.</p>"); // on affiche un message dans la card
+            cardSelector.append("<p>Vous n'avez pas encore renseigné de ville.</p>"); // on affiche un message dans la card
         } else { // sinon ...
             $("#weatherday *:not(div)").remove(); //Permet de ne pas regénéré le card-panel 
 
@@ -80,9 +80,9 @@ $(document).ready(function () {
         var jourforecast = jour;
 
         if (city == null) { // on teste si la variable city est nulle
-            cardWeatherWeek.append("<p>Vous n'avez pas encore renseign&eacute; de ville.</p>"); // on affiche un message dans la card
+            cardWeatherWeek.append("<p>Vous n'avez pas encore renseigné de ville.</p>"); // on affiche un message dans la card
         } else { // sinon ...
-
+            $("#weatherweek *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
             $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + myAPPID, function (result) { // on mets le résultat dans une variable result qui vaut le code JSON qu'on voit dans le navigateur
                 
                 //Je récupère les listes de la réponse
@@ -152,6 +152,7 @@ $(document).ready(function () {
             localStorage.setItem("city", mycity); // on crée une variable localStorage, avec pour clé city et comme valeur la ville de l'utilisateur
             city = mycity; // on donne la ville à la variable city qui est utilisée dans la fonction getWeatherDay
             getWeatherDay(); // on appelle la fonction getWeatherDay pour récuperer la météo de cette ville, ville qui est stockée dans la variable city
+            getWeatherWeek(); // on appelle la fonction getWeatherWeek pour récuperer la météo de cette ville, ville qui est stockée dans la variable city
         } else { // si le champs fait 2 caracteres ou moins on ...
             alert('Ville invalide'); // affiche une erreur
         }
