@@ -152,7 +152,6 @@ $(document).ready(function () {
             localStorage.setItem("city", mycity); // on crée une variable localStorage, avec pour clé city et comme valeur la ville de l'utilisateur
             city = mycity; // on donne la ville à la variable city qui est utilisée dans la fonction getWeatherDay
             getWeatherDay(); // on appelle la fonction getWeatherDay pour récuperer la météo de cette ville, ville qui est stockée dans la variable city
-            getWeatherWeek(); // on appelle la fonction getWeatherWeek pour récuperer la météo de cette ville, ville qui est stockée dans la variable city
         } else { // si le champs fait 2 caracteres ou moins on ...
             alert('Ville invalide'); // affiche une erreur
         }
