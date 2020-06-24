@@ -18,6 +18,12 @@ a.btn {
     color: white;
 }
 
+.dateweather {
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+}
+
 .icon_menu {
     float: left;
     padding: 2.5%;
@@ -38,6 +44,7 @@ a.btn {
 .infoweather {
   color: white;
   font-size: 15px;
+  font-weight: 500;
 }
 
 .infoweather img {
@@ -47,6 +54,13 @@ a.btn {
 
 .waves-effect div {
   vertical-align:middle;
+}
+
+.img_weather_week {
+  margin-left: 15%;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 
   
