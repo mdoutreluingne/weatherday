@@ -79,71 +79,73 @@ $(document).ready(function () {
         var increicon = 0;
         var jourforecast = jour;
 
-        if (city == null) { // on teste si la variable city est nulle
+        $("#weatherweek *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
+        $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + myAPPID, function (result) { // on mets le résultat dans une variable result qui vaut le code JSON qu'on voit dans le navigateur
+
+            //Je récupère les listes de la réponse
+            tabWeather = result.list;
+
+            //Je parcourt le json et récupère la list de la météo des jours suivant
+            for (let index = 0; index < tabWeather.length; index++) {
+                //Récupère le jour et l'heure pour un jour
+                var dayweather = new Date(tabWeather[index].dt * 1000);
+                var jourweather = dayweather.getDay();
+                var heureweather = dayweather.getHours();
+
+                if (jourweather != jour) { //N'affiche pas pour la date d'aujourd'hui
+
+                    //Stock les valeurs pour les prochains jours
+                    for (let i = index; i < tabWeather.length; i++) {
+                        var datetest = new Date(tabWeather[i].dt * 1000);
+                        var jourtest = datetest.getDay();
+
+                        if (dayweather.getDay() == datetest.getDay()) { //Si c'est le même jour alors...
+                            if (tabWeather[i].main.temp_max > moyTempMaxWeather) { //Stock la plus grande valeur max
+                                moyTempMaxWeather = tabWeather[i].main.temp_max;
+                            }
+                            if (tabWeather[i].main.temp_min > moyTempMinWeather) { //Stock la petite grande valeur min
+                                moyTempMinWeather = tabWeather[i].main.temp_min;
+                            }
+                            if (datetest.getHours() == 14) { //Stock l'icon à 14h
+                                tabIdIcon[increicon] = tabWeather[i].weather[0].icon;
+                                increicon++;
+                            }
+
+                        }
+                        else { //On passe au jour suivant 
+                            tabTempMax[incre] = moyTempMaxWeather; //Stock la plus grande valeur dans le tableau pour un jour
+                            tabTempMin[incre] = moyTempMinWeather; //Stock la plus petite valeur dans le tableau pour un jour
+                            moyTempMaxWeather = 0;
+                            moyTempMinWeather = 0;
+                            dayweather.setDate(dayweather.getDate() + 1); //Jour suivant
+                            incre++;
+                            jourtest = jourtest + 1; //Jour suivant
+                        }
+
+                    }
+
+                }
+                else { //Affiche les prévisions pour aujourd'hui
+                    cardForecastDay.slick('slickAdd', '<div><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6 class="white-text">' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6 class="white-text">' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p class="white-text">' + heureweather + ':00</p></div>');
+                }
+            }
+
+            //Affiche les prévisions sur 5 jours
+            for (let l = 0; l < 5; l++) {
+                jourforecast = jourforecast + 1;
+                if (jourforecast > 6) {
+                    jourforecast = 0;
+                }
+                cardWeatherWeek.slick('slickAdd', '<div><img src=\'img/iconweather_32x32/' + tabIdIcon[l] + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6 class="white-text">' + (tabTempMax[l] - 273.15).toFixed(1) + '°C</h6><h6 class="white-text">' + (tabTempMin[l] - 273.15).toFixed(1) + '°C</h6><p class="white-text">' + dayName[jourforecast].substring(0, 3) + '.</p></div>');
+            }
+
+        });
+
+        /*if (city == null) { // on teste si la variable city est nulle
             cardWeatherWeek.append("<p>Vous n'avez pas encore renseigné de ville.</p>"); // on affiche un message dans la card
         } else { // sinon ...
-            $("#weatherweek *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
-            $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + myAPPID, function (result) { // on mets le résultat dans une variable result qui vaut le code JSON qu'on voit dans le navigateur
-                
-                //Je récupère les listes de la réponse
-                tabWeather = result.list;
-                
-                //Je parcourt le json et récupère la list de la météo des jours suivant
-                for (let index = 0; index < tabWeather.length; index++) {
-                    //Récupère le jour et l'heure pour un jour
-                    var dayweather = new Date(tabWeather[index].dt * 1000);
-                    var jourweather = dayweather.getDay();
-                    var heureweather = dayweather.getHours();
-
-                    if (jourweather != jour) { //N'affiche pas pour la date d'aujourd'hui
-
-                        //Stock les valeurs pour les prochains jours
-                        for (let i = index; i < tabWeather.length; i++) {
-                            var datetest = new Date(tabWeather[i].dt * 1000);
-                            var jourtest = datetest.getDay();
-
-                            if (dayweather.getDay() == datetest.getDay()) { //Si c'est le même jour alors...
-                                if (tabWeather[i].main.temp_max > moyTempMaxWeather) { //Stock la plus grande valeur max
-                                    moyTempMaxWeather = tabWeather[i].main.temp_max;
-                                }
-                                if (tabWeather[i].main.temp_min > moyTempMinWeather) { //Stock la petite grande valeur min
-                                    moyTempMinWeather = tabWeather[i].main.temp_min;
-                                }
-                                if (datetest.getHours() == 14) { //Stock l'icon à 14h
-                                    tabIdIcon[increicon] = tabWeather[i].weather[0].icon;
-                                    increicon++;
-                                }
-                                
-                            }
-                            else { //On passe au jour suivant 
-                                tabTempMax[incre] = moyTempMaxWeather; //Stock la plus grande valeur dans le tableau pour un jour
-                                tabTempMin[incre] = moyTempMinWeather; //Stock la plus petite valeur dans le tableau pour un jour
-                                moyTempMaxWeather = 0;
-                                moyTempMinWeather = 0;
-                                dayweather.setDate(dayweather.getDate() + 1); //Jour suivant
-                                incre++;
-                                jourtest = jourtest + 1; //Jour suivant
-                            }
-                            
-                        }
-                         
-                    }
-                    else { //Affiche les prévisions pour aujourd'hui
-                        cardForecastDay.slick('slickAdd', '<div><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6 class="white-text">' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6 class="white-text">' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p class="white-text">' + heureweather + ':00</p></div>');
-                    }
-                }
-
-                //Affiche les prévisions sur 5 jours
-                for (let l = 0; l < 5; l++) {
-                    jourforecast = jourforecast + 1;
-                    if (jourforecast > 6) {
-                        jourforecast = 0;
-                    }
-                    cardWeatherWeek.slick('slickAdd', '<div><img src=\'img/iconweather_32x32/' + tabIdIcon[l] + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6 class="white-text">' + (tabTempMax[l] - 273.15).toFixed(1) + '°C</h6><h6 class="white-text">' + (tabTempMin[l] - 273.15).toFixed(1) + '°C</h6><p class="white-text">' + dayName[jourforecast].substring(0, 3) + '.</p></div>'); 
-                }
-
-            });
-        }
+           
+        }*/
     }
 
     function submitForm() { // on crée une fonction qui récupere la valeur du formulaire
@@ -152,6 +154,7 @@ $(document).ready(function () {
             localStorage.setItem("city", mycity); // on crée une variable localStorage, avec pour clé city et comme valeur la ville de l'utilisateur
             city = mycity; // on donne la ville à la variable city qui est utilisée dans la fonction getWeatherDay
             getWeatherDay(); // on appelle la fonction getWeatherDay pour récuperer la météo de cette ville, ville qui est stockée dans la variable city
+            //getWeatherWeek();
         } else { // si le champs fait 2 caracteres ou moins on ...
             alert('Ville invalide'); // affiche une erreur
         }
