@@ -143,7 +143,7 @@ $(document).ready(function () {
 
                 }
                 else { //Affiche les prévisions pour aujourd'hui
-                    swiper.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6 class="white-text">' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6 class="white-text">' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p class="white-text">' + heureweather + ':00</p></div>');
+                    swiper.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + heureweather + ':00</p></div>');
                 }
             }
             
@@ -153,18 +153,11 @@ $(document).ready(function () {
                 if (jourforecast > 6) {
                     jourforecast = 0;
                 }            
-                swiperweek.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabIdIcon[l] + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6 class="white-text">' + (tabTempMax[l] - 273.15).toFixed(1) + '°C</h6><h6 class="white-text">' + (tabTempMin[l] - 273.15).toFixed(1) + '°C</h6><p class="white-text">' + dayName[jourforecast].substring(0, 3) + '.</p></div>');
+                swiperweek.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabIdIcon[l] + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabTempMax[l] - 273.15).toFixed(1) + '°C</h6><h6>' + (tabTempMin[l] - 273.15).toFixed(1) + '°C</h6><p>' + dayName[jourforecast].substring(0, 3) + '.</p></div>');
             }
             
-
         });
 
-        /*if (city == null) { // on teste si la variable city est nulle
-            cardWeatherWeek.append("<p>Vous n'avez pas encore renseigné de ville.</p>"); // on affiche un message dans la card
-        } else { // sinon ...
-           
-        }*/
-        
     }
 
     function submitForm() { // on crée une fonction qui récupere la valeur du formulaire
