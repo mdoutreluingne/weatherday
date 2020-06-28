@@ -70,7 +70,7 @@
                     <li><a class="waves-effect">Mode détaillé
                             <div class="switch secondary-content">
                                 <label>
-                                    <input type="checkbox">
+                                    <input type="checkbox" onclick="easyMode()" id="easymode">
                                     <span class="lever"></span>
                                 </label>
                             </div>
@@ -108,8 +108,10 @@
         <!-- Prévision sur aujourd'hui -->
         <div class="row">
             <div class="card-panel">
+                <p class="title_forecast">Aujourd'hui</p>
                 <div class="swiper-container">
-                    <div class="swiper-wrapper"></div>
+                    <div class="swiper-wrapper">  
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,10 +130,57 @@
         </div>
 
         <!-- Prévision sur 5 jours -->
-        <div class="row">
-            <div class="card-panel">
-                <div class="" id="weatherweek">
-                    <div class="swiper-wrapper"></div>
+        <div class="forecast">
+            <div class="row">
+                <div class="card-panel">
+                    <p class="title_forecast">Prochains jours</p>
+                    <div class="" id="weatherweek">
+                        <div class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pour le mode détaillé (easymode) -->
+        <div class="easymode_activate">
+            <div class="row">
+                <div class="card-panel">
+                    <p class="title_forecast" id="text1"></p>
+                    <div class="" id="day1">
+                        <div class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card-panel">
+                    <p class="title_forecast" id="text2"></p>
+                    <div class="" id="day2">
+                        <div class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card-panel">
+                    <p class="title_forecast" id="text3"></p>
+                    <div class="" id="day3">
+                        <div class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card-panel">
+                    <p class="title_forecast" id="text4"></p>
+                    <div class="" id="day4">
+                        <div class="swiper-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card-panel">
+                    <p class="title_forecast" id="text5"></p>
+                    <div class="" id="day5">
+                        <div class="swiper-wrapper"></div>
+                    </div>
                 </div>
             </div>
         </div>

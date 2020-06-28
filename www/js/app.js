@@ -1,15 +1,10 @@
 $(document).ready(function () {
 
-    /*Configuration des slides */
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 5,
-        spaceBetween: 30
+    
+    //Importe la config des slides
+    $.getScript("js/slide.js", function () { 
     });
 
-    var swiperweek = new Swiper('#weatherweek', {
-        slidesPerView: 5,
-        spaceBetween: 30
-    });
     
     //Variables de stockage
     var city = localStorage.getItem("city"); //on récupere la variable localStorage ayant pour clé city, puis on la met dans une variable
@@ -87,12 +82,11 @@ $(document).ready(function () {
         var moyTempMinWeather = 0;
         var tabTempMin = new Array();
         var tabIdIcon = new Array();
+        var tabEasymode = new Array();
         
-        var gal = document.getElementById('forecastday');
         var incre = 0;
         var increicon = 0;
         var jourforecast = jour;
-        var test = new Array();
 
         $("#weatherweek *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
         $("#forecastday *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
@@ -140,22 +134,50 @@ $(document).ready(function () {
                         }
 
                     }
+                    //Stock la météo sans faire le trie
+                    tabEasymode[index] = tabWeather[index];
 
                 }
                 else { //Affiche les prévisions pour aujourd'hui
                     swiper.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + heureweather + ':00</p></div>');
                 }
             }
-            
-            //Affiche les prévisions sur 5 jours
-            for (let l = 0; l < 5; l++) {
-                jourforecast = jourforecast + 1;
-                if (jourforecast > 6) {
-                    jourforecast = 0;
-                }            
-                swiperweek.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabIdIcon[l] + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabTempMax[l] - 273.15).toFixed(1) + '°C</h6><h6>' + (tabTempMin[l] - 273.15).toFixed(1) + '°C</h6><p>' + dayName[jourforecast].substring(0, 3) + '.</p></div>');
+
+            if (localStorage.easymode == "off") { //Si le mode détaillé n'est pas coché
+
+                //Affiche les prévisions sur 5 jours
+                for (let l = 0; l < 5; l++) {
+                    jourforecast = jourforecast + 1;
+                    if (jourforecast > 6) {
+                        jourforecast = 0;
+                    }
+                    swiperweek.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabIdIcon[l] + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabTempMax[l] - 273.15).toFixed(1) + '°C</h6><h6>' + (tabTempMin[l] - 273.15).toFixed(1) + '°C</h6><p>' + dayName[jourforecast].substring(0, 3) + '.</p></div>');
+                }
             }
-            
+            else { //Si le mode détaillé est coché
+                
+                var h = 0; //Variable d'incrémentation
+                var day2 = new Date(); //Date pour passer au jour suivant
+                for (let j = 4; j < tabEasymode.length; j++) {
+                    
+                    var day = new Date(tabEasymode[j].dt * 1000);
+                    
+                    var swiperday = new Swiper('#day'+h, { //Configuration des slides
+                        slidesPerView: 5,
+                        spaceBetween: 30
+                    });
+
+                    if (day.getDay() == day2.getDay()) { //Si c'est le même jour alors...
+                        $('#text' + h).text(dayName[day.getDay()]);
+                        swiperday.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabEasymode[j].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[j].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[j].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + day.getHours() + ':00</p></div>');
+                    } else { 
+                        day2.setDate(day2.getDate() + 1); //Jour suivant
+                        h++;
+                    }
+                    
+                }
+            }
+
         });
 
     }
@@ -181,6 +203,15 @@ $(document).ready(function () {
         event.preventDefault(); // ici on annule le comportement par défault qui est de recharger la page quand on soumet un formulaire
         submitForm(); // ... on appelle la fonction submitForm qui va traiter ce qu'il y a dans le champ de la ville
     });
+
+    //Prendre en compte la config en cas de refresh
+    if (localStorage.easymode == "off") {
+        $('.easymode_activate').hide();
+        $('.forecast').show();
+    } else {
+        $('.forecast').hide();
+        $('.easymode_activate').show();
+    }
 
     $('.sidenav').sidenav(); //Affiche la slidenav de côté
     getWeatherDay(); // ici on appelle à l'allumage de l'application la fonction getWeatherDay

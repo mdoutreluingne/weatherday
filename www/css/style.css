@@ -72,5 +72,19 @@ a.btn {
   color: white !important;
 }
 
+.title_forecast {
+  border-bottom: 1px solid;
+  width: 100%;
+  margin-bottom: 10%;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.swiper-scrollbar {
+  color: red !important;
+  background-color: red !important;
+}
+
+
 
   
