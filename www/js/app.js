@@ -142,7 +142,7 @@ $(document).ready(function () {
                     swiper.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + heureweather + ':00</p></div>');
                 }
             }
-
+            
             if (localStorage.easymode == "off") { //Si le mode détaillé n'est pas coché
 
                 //Affiche les prévisions sur 5 jours
@@ -155,26 +155,30 @@ $(document).ready(function () {
                 }
             }
             else { //Si le mode détaillé est coché
-                
+                tabEasymode.splice(0, 5); //Supprime les éléments undefined
                 var h = 0; //Variable d'incrémentation
                 var day2 = new Date(); //Date pour passer au jour suivant
-                for (let j = 4; j < tabEasymode.length; j++) {
-                    
-                    var day = new Date(tabEasymode[j].dt * 1000);
-                    
-                    var swiperday = new Swiper('#day'+h, { //Configuration des slides
+
+                //Parcourt le tableau
+                for (const dataWeather of tabEasymode) {
+                    //console.log(dataWeather);
+                    var day = new Date(dataWeather.dt * 1000);
+
+                    var swiperday = new Swiper('#day' + h, { //Configuration des slides
                         slidesPerView: 5,
-                        spaceBetween: 30
+                        spaceBetween: 10,
+                        cssMode: true
                     });
 
                     if (day.getDay() == day2.getDay()) { //Si c'est le même jour alors...
-                        $('#text' + h).text(dayName[day.getDay()]);
-                        swiperday.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabEasymode[j].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[j].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[j].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + day.getHours() + ':00</p></div>');
-                    } else { 
+                        //if (day.getHours() > 6) { //Si c'est entre 6h et 21h
+                            $('#text' + h).text(dayName[day.getDay()]);
+                            swiperday.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + dataWeather.weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (dataWeather.main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (dataWeather.main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + day.getHours() + ':00</p></div>');
+                        //}
+                    } else {
                         day2.setDate(day2.getDate() + 1); //Jour suivant
                         h++;
                     }
-                    
                 }
             }
 

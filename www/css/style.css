@@ -80,9 +80,9 @@ a.btn {
   font-size: 12px;
 }
 
-.swiper-scrollbar {
-  color: red !important;
-  background-color: red !important;
+.swiper-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 
