@@ -37,6 +37,10 @@ $(document).ready(function () {
         
         if (city == null) { // on teste si la variable city est nulle
             cardSelector.append("<p>Vous n'avez pas encore renseigné de ville.</p>"); // on affiche un message dans la card
+            localStorage.easymode = "off";// Initialise les variables de stockages pour la première fois
+            localStorage.darkmode = "default";// Initialise les variables de stockages pour la première fois
+            localStorage.setItem("city", "Paris");// Initialise les variables de stockages pour la première fois
+            window.location.reload(); //Actualise
         } else { // sinon ...
             $("#weatherday *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
             $("#forecastday *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
@@ -91,98 +95,102 @@ $(document).ready(function () {
         $("#weatherweek *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
         $("#forecastday *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
 
-        $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + myAPPID, function (result) { // on mets le résultat dans une variable result qui vaut le code JSON qu'on voit dans le navigateur
+        if (city == null) {
+            cardWeatherWeek.append("<p>Vous n'avez pas encore renseigné de ville.</p>");
+        } else {
+            $.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + myAPPID, function (result) { // on mets le résultat dans une variable result qui vaut le code JSON qu'on voit dans le navigateur
 
-            //Je récupère les listes de la réponse
-            tabWeather = result.list;
+                //Je récupère les listes de la réponse
+                tabWeather = result.list;
 
-            //Je parcourt le json et récupère la list de la météo des jours suivant
-            for (let index = 0; index < tabWeather.length; index++) {
-                //Récupère le jour et l'heure pour un jour
-                var dayweather = new Date(tabWeather[index].dt * 1000);
-                var jourweather = dayweather.getDay();
-                var heureweather = dayweather.getHours();
+                //Je parcourt le json et récupère la list de la météo des jours suivant
+                for (let index = 0; index < tabWeather.length; index++) {
+                    //Récupère le jour et l'heure pour un jour
+                    var dayweather = new Date(tabWeather[index].dt * 1000);
+                    var jourweather = dayweather.getDay();
+                    var heureweather = dayweather.getHours();
 
-                if (jourweather != jour) { //N'affiche pas pour la date d'aujourd'hui
+                    if (jourweather != jour) { //N'affiche pas pour la date d'aujourd'hui
 
-                    //Stock les valeurs pour les prochains jours
-                    for (let i = index; i < tabWeather.length; i++) {
-                        var datetest = new Date(tabWeather[i].dt * 1000);
-                        var jourtest = datetest.getDay();
+                        //Stock les valeurs pour les prochains jours
+                        for (let i = index; i < tabWeather.length; i++) {
+                            var datetest = new Date(tabWeather[i].dt * 1000);
+                            var jourtest = datetest.getDay();
 
-                        if (dayweather.getDay() == datetest.getDay()) { //Si c'est le même jour alors...
-                            if (tabWeather[i].main.temp_max > moyTempMaxWeather) { //Stock la plus grande valeur max
-                                moyTempMaxWeather = tabWeather[i].main.temp_max;
+                            if (dayweather.getDay() == datetest.getDay()) { //Si c'est le même jour alors...
+                                if (tabWeather[i].main.temp_max > moyTempMaxWeather) { //Stock la plus grande valeur max
+                                    moyTempMaxWeather = tabWeather[i].main.temp_max;
+                                }
+                                if (tabWeather[i].main.temp_min > moyTempMinWeather) { //Stock la petite grande valeur min
+                                    moyTempMinWeather = tabWeather[i].main.temp_min;
+                                }
+                                if (datetest.getHours() == 14) { //Stock l'icon à 14h
+                                    tabIdIcon[increicon] = tabWeather[i].weather[0].icon;
+                                    increicon++;
+                                }
+
                             }
-                            if (tabWeather[i].main.temp_min > moyTempMinWeather) { //Stock la petite grande valeur min
-                                moyTempMinWeather = tabWeather[i].main.temp_min;
-                            }
-                            if (datetest.getHours() == 14) { //Stock l'icon à 14h
-                                tabIdIcon[increicon] = tabWeather[i].weather[0].icon;
-                                increicon++;
+                            else { //On passe au jour suivant 
+                                tabTempMax[incre] = moyTempMaxWeather; //Stock la plus grande valeur dans le tableau pour un jour
+                                tabTempMin[incre] = moyTempMinWeather; //Stock la plus petite valeur dans le tableau pour un jour
+                                moyTempMaxWeather = 0;
+                                moyTempMinWeather = 0;
+                                dayweather.setDate(dayweather.getDate() + 1); //Jour suivant
+                                incre++;
+                                jourtest = jourtest + 1; //Jour suivant
                             }
 
                         }
-                        else { //On passe au jour suivant 
-                            tabTempMax[incre] = moyTempMaxWeather; //Stock la plus grande valeur dans le tableau pour un jour
-                            tabTempMin[incre] = moyTempMinWeather; //Stock la plus petite valeur dans le tableau pour un jour
-                            moyTempMaxWeather = 0;
-                            moyTempMinWeather = 0;
-                            dayweather.setDate(dayweather.getDate() + 1); //Jour suivant
-                            incre++;
-                            jourtest = jourtest + 1; //Jour suivant
+                        //Stock la météo sans faire le trie
+                        tabEasymode[index] = tabWeather[index];
+
+                    }
+                    else { //Affiche les prévisions pour aujourd'hui
+                        swiper.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + heureweather + ':00</p></div>');
+                    }
+                }
+
+                if (localStorage.easymode == "off") { //Si le mode détaillé n'est pas coché
+
+                    //Affiche les prévisions sur 5 jours
+                    for (let l = 0; l < 5; l++) {
+                        jourforecast = jourforecast + 1;
+                        if (jourforecast > 6) {
+                            jourforecast = 0;
                         }
-
+                        swiperweek.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabIdIcon[l] + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabTempMax[l] - 273.15).toFixed(1) + '°C</h6><h6>' + (tabTempMin[l] - 273.15).toFixed(1) + '°C</h6><p>' + dayName[jourforecast].substring(0, 3) + '.</p></div>');
                     }
-                    //Stock la météo sans faire le trie
-                    tabEasymode[index] = tabWeather[index];
-
                 }
-                else { //Affiche les prévisions pour aujourd'hui
-                    swiper.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + heureweather + ':00</p></div>');
-                }
-            }
-            
-            if (localStorage.easymode == "off") { //Si le mode détaillé n'est pas coché
+                else { //Si le mode détaillé est coché
+                    tabEasymode.splice(0, 5); //Supprime les éléments undefined
+                    var h = 0; //Variable d'incrémentation
+                    var day2 = new Date(); //Date pour passer au jour suivant
 
-                //Affiche les prévisions sur 5 jours
-                for (let l = 0; l < 5; l++) {
-                    jourforecast = jourforecast + 1;
-                    if (jourforecast > 6) {
-                        jourforecast = 0;
-                    }
-                    swiperweek.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabIdIcon[l] + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabTempMax[l] - 273.15).toFixed(1) + '°C</h6><h6>' + (tabTempMin[l] - 273.15).toFixed(1) + '°C</h6><p>' + dayName[jourforecast].substring(0, 3) + '.</p></div>');
-                }
-            }
-            else { //Si le mode détaillé est coché
-                tabEasymode.splice(0, 5); //Supprime les éléments undefined
-                var h = 0; //Variable d'incrémentation
-                var day2 = new Date(); //Date pour passer au jour suivant
+                    //Parcourt le tableau
+                    for (const dataWeather of tabEasymode) {
+                        //console.log(dataWeather);
+                        var day = new Date(dataWeather.dt * 1000);
 
-                //Parcourt le tableau
-                for (const dataWeather of tabEasymode) {
-                    //console.log(dataWeather);
-                    var day = new Date(dataWeather.dt * 1000);
+                        var swiperday = new Swiper('#day' + h, { //Configuration des slides
+                            slidesPerView: 5,
+                            spaceBetween: 10,
+                            cssMode: true
+                        });
 
-                    var swiperday = new Swiper('#day' + h, { //Configuration des slides
-                        slidesPerView: 5,
-                        spaceBetween: 10,
-                        cssMode: true
-                    });
-
-                    if (day.getDay() == day2.getDay()) { //Si c'est le même jour alors...
-                        //if (day.getHours() > 6) { //Si c'est entre 6h et 21h
+                        if (day.getDay() == day2.getDay()) { //Si c'est le même jour alors...
+                            //if (day.getHours() > 6) { //Si c'est entre 6h et 21h
                             $('#text' + h).text(dayName[day.getDay()]);
                             swiperday.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + dataWeather.weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (dataWeather.main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (dataWeather.main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + day.getHours() + ':00</p></div>');
-                        //}
-                    } else {
-                        day2.setDate(day2.getDate() + 1); //Jour suivant
-                        h++;
+                            //}
+                        } else {
+                            day2.setDate(day2.getDate() + 1); //Jour suivant
+                            h++;
+                        }
                     }
                 }
-            }
 
-        });
+            });
+        }
 
     }
 
