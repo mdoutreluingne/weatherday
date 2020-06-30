@@ -56,8 +56,6 @@
                         </div>
                     </li>
                     <li><a class="subheader">Réglages</a></li>
-                    <li><a class="waves-effect" href="">Langue</a></li>
-                    <li><a class="waves-effect" href="">Notification</a></li>
                     <li><a class="waves-effect">Mode nuit
                         <div class="switch secondary-content">
                             <label class="switch">
@@ -97,7 +95,12 @@
                     <input id="city" type="text" class="text_city">
                     <label for="city">Votre Ville</label>
                 </div>
-                <a class="waves-effect waves-light btn" id="getWeather">Obtient la météo</a>
+                <div class="input-field col s12">
+                    <a class="waves-effect waves-light btn" id="getWeather">Obtient la météo</a>
+                </div>
+                <div class="input-field col s12">
+                    <a class="waves-effect waves-light btn" id="getPosition">Ma localisation</a>
+                </div>         
             </form>
         </div>
 
@@ -191,6 +194,8 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
+        <script type="text/javascript" src="js/slide.js"></script>
+        <script type="text/javascript" src="js/geolocalisation.js"></script>
         <script type="text/javascript" src="js/app.js"></script>
         
     </body>

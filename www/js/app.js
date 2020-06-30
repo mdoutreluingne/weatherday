@@ -1,19 +1,12 @@
 $(document).ready(function () {
 
-    
-    //Importe la config des slides
-    $.getScript("js/slide.js", function () { 
-    });
-
-    
     //Variables de stockage
     var city = localStorage.getItem("city"); //on récupere la variable localStorage ayant pour clé city, puis on la met dans une variable
-    const myAPPID = "36fc5ff10b8e82d7dc74e88c09113750"; //ici on déclare notre APPID pour OpenWeatherMap
-
+ 
     //Tableaux des mois et jours
     const monthName = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
     const dayName = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-
+    
     //Obtient la date du jour
     var maDate = new Date();
     var jour = maDate.getDay(); //Jour
@@ -45,7 +38,7 @@ $(document).ready(function () {
             $("#weatherday *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
             $("#forecastday *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
 
-            $.getJSON("http://api.openweathermap.org/data/2.5/weather?q="+ city + "&appid=" + myAPPID + "&lang=fr", function (result) { // on mets le résultat dans une variable result qui vaut le code JSON qu'on voit dans le navigateur
+            $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + myAPPID + "&lang=fr", function (result) { // on mets le résultat dans une variable result qui vaut le code JSON qu'on voit dans le navigateur
                 var cityName = result.name; // le nom de la ville est directement accesible donc pas de souci
                 var weatherType = (result.weather[0].description).ucFirst(); // la description du temps est dans le tableau weather (un tableau est défini par des []), on vise le premier (0 = le premier en programmation), puis on prend la valeur de main
                 var iconCode = result.weather[0].icon; // Meme chose qu'au dessus sauf qu'on prend la valeur de icon
@@ -91,6 +84,7 @@ $(document).ready(function () {
         var incre = 0;
         var increicon = 0;
         var jourforecast = jour;
+        var y = 0;
 
         $("#weatherweek *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
         $("#forecastday *:not(div)").remove(); //Permet de ne pas regénéré le card-panel
@@ -147,13 +141,15 @@ $(document).ready(function () {
                     }
                     else { //Affiche les prévisions pour aujourd'hui
                         swiper.appendSlide('<div class="swiper-slide"><img src=\'img/iconweather_32x32/' + tabWeather[index].weather[0].icon + '.png\' class=\'responsive-img brand-logo img_weather_week\'><h6>' + (tabWeather[index].main.temp_max - 273.15).toFixed(1) + '°C</h6><h6>' + (tabWeather[index].main.temp_min - 273.15).toFixed(1) + '°C</h6><p>' + heureweather + ':00</p></div>');
+                        y++;
                     }
                 }
-
+                
                 if (localStorage.easymode == "off") { //Si le mode détaillé n'est pas coché
 
                     //Affiche les prévisions sur 5 jours
                     for (let l = 0; l < 5; l++) {
+
                         jourforecast = jourforecast + 1;
                         if (jourforecast > 6) {
                             jourforecast = 0;
@@ -162,13 +158,13 @@ $(document).ready(function () {
                     }
                 }
                 else { //Si le mode détaillé est coché
-                    tabEasymode.splice(0, 5); //Supprime les éléments undefined
+                    tabEasymode.splice(0, y); //Supprime les éléments undefined
                     var h = 0; //Variable d'incrémentation
                     var day2 = new Date(); //Date pour passer au jour suivant
-
+                    
                     //Parcourt le tableau
                     for (const dataWeather of tabEasymode) {
-                        //console.log(dataWeather);
+                       
                         var day = new Date(dataWeather.dt * 1000);
 
                         var swiperday = new Swiper('#day' + h, { //Configuration des slides
@@ -211,6 +207,11 @@ $(document).ready(function () {
         submitForm(); // ... on appelle la fonction submitForm qui va traiter ce qu'il y a dans le champ de la ville
     });
 
+    $('#getPosition').on('touchstart', function () { // quand on commence à toucher le bouton avec l'id getWeatherDay, alors ...
+        getPosition(); // ... on appelle la fonction submitForm qui va traiter ce qu'il y a dans le champ de la ville
+        
+    });
+
     $('form').submit(function (event) { // quand on soumet le formulaire, c'est à dire qu'on appuie sur la touche Entrée, alors ...
         event.preventDefault(); // ici on annule le comportement par défault qui est de recharger la page quand on soumet un formulaire
         submitForm(); // ... on appelle la fonction submitForm qui va traiter ce qu'il y a dans le champ de la ville
@@ -224,7 +225,7 @@ $(document).ready(function () {
         $('.forecast').hide();
         $('.easymode_activate').show();
     }
-
+    
     $('.sidenav').sidenav(); //Affiche la slidenav de côté
     getWeatherDay(); // ici on appelle à l'allumage de l'application la fonction getWeatherDay
     getWeatherWeek(); // ici on appelle à l'allumage de l'application la fonction getWeatherWeek

@@ -1,3 +1,4 @@
+    const myAPPID = "36fc5ff10b8e82d7dc74e88c09113750"; //ici on déclare notre APPID pour OpenWeatherMap
 
     var elements = $('.card-panel, .card, .input-field label, nav, .btn, .text_city, .title_forecast');
     elements.toggleClass(localStorage.darkmode);
