@@ -15,6 +15,10 @@
             {
               "xml": "<feature name=\"Geolocation\"><param name=\"android-package\" value=\"org.apache.cordova.geolocation.Geolocation\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -33,6 +37,10 @@
             {
               "xml": "<uses-feature android:name=\"android.hardware.location.gps\" />",
               "count": 1
+            },
+            {
+              "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+              "count": 1
             }
           ]
         }
@@ -44,6 +52,9 @@
       "PACKAGE_NAME": "io.cordova.weatherday"
     },
     "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "io.cordova.weatherday"
+    },
+    "cordova-plugin-network-information": {
       "PACKAGE_NAME": "io.cordova.weatherday"
     }
   },
@@ -62,10 +73,28 @@
       "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
       "pluginId": "cordova-plugin-geolocation",
       "runs": true
+    },
+    {
+      "id": "cordova-plugin-network-information.network",
+      "file": "plugins/cordova-plugin-network-information/www/network.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "navigator.connection",
+        "navigator.network.connection"
+      ]
+    },
+    {
+      "id": "cordova-plugin-network-information.Connection",
+      "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+      "pluginId": "cordova-plugin-network-information",
+      "clobbers": [
+        "Connection"
+      ]
     }
   ],
   "plugin_metadata": {
     "cordova-plugin-whitelist": "1.3.4",
-    "cordova-plugin-geolocation": "4.0.2"
+    "cordova-plugin-geolocation": "4.0.2",
+    "cordova-plugin-network-information": "2.0.2"
   }
 }
