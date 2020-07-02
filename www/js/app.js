@@ -226,6 +226,7 @@ $(document).ready(function () {
         $('.easymode_activate').show();
     }
     
+    onDeviceReady();//ici on appelle à l'allumage de l'application la fonction onOffline est appellé pour vérifier si l'utilisateur est hors ligne
     $('.sidenav').sidenav(); //Affiche la slidenav de côté
     getWeatherDay(); // ici on appelle à l'allumage de l'application la fonction getWeatherDay
     getWeatherWeek(); // ici on appelle à l'allumage de l'application la fonction getWeatherWeek

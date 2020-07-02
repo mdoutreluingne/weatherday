@@ -12,6 +12,9 @@
     },
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "io.cordova.weatherday"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "io.cordova.weatherday"
     }
   },
   "dependent_plugins": {}

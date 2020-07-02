@@ -9,7 +9,7 @@ $(function () {
 
     document.addEventListener("backbutton", backButton,false);
 
-    function backButton() {
+    function backButton(e) {
         e.preventDefault();
         $("app").show("slow");
         $("propos").hide("slow"); 
